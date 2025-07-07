@@ -8,6 +8,9 @@ import alumniRoutes from "./routes/alumni.js";
 import studentRoutes from "./routes/student.js";
 // import user from "./routes/user.js";
 import userRoutes from './routes/users.js';
+ import upload from "./middleware/uploadMiddleware.js"; // Uncomment if you have a file upload middleware
+
+ 
 dotenv.config();
 // const JWT_SECRET = process.env.j8B9lKEF2MJLosfTWRMzKejZRsqRhTZ2;
 // console.log("JWT_SECRET is:", process.env.JWT_SECRET);
@@ -41,6 +44,9 @@ app.get("/api/protected", protect, (req, res) => {
   res.json({ msg: `Hello ${req.user.role}, protected content unlocked!` });
 });
 
+
+app.use("/uploads", express.static("uploads")); // serve uploaded images
+
 // Import alumni routes
 app.use("/api/alumni", alumniRoutes);
 
@@ -49,3 +55,5 @@ app.use("/api/student", studentRoutes);
 
 // app.use("/api/users", user);
 app.use('/api/users', userRoutes);     
+
+

@@ -2,9 +2,9 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import { AuthContext } from "../context/AuthContext";
-
+import { Link } from "react-router-dom";
 export default function StudentProfile() {
-  const { token } = useContext(AuthContext);
+  const { token,user } = useContext(AuthContext);
   const [profile, setProfile] = useState(null);
 
   useEffect(() => {
@@ -32,6 +32,13 @@ export default function StudentProfile() {
           <p>Loading...</p>
         ) : (
           <div className="bg-white p-6 rounded shadow space-y-3">
+            {user?.profilePhoto && (
+  <img
+    src={`http://localhost:5000/uploads/${user.profilePhoto}`}
+    alt="Profile"
+    className="w-24 h-24 rounded-full object-cover mb-4 mx-3"
+  />
+)}
             <p><strong>Name:</strong> {profile.name}</p>
             <p><strong>Email:</strong> {profile.email}</p>
             <p><strong>Domain:</strong> {profile.domain || "Not specified"}</p>
@@ -39,6 +46,17 @@ export default function StudentProfile() {
             <p><strong>Skills:</strong> {profile.skills?.join(", ") || "No skills listed"}</p>
           </div>
         )}
+
+        {/* Bottom Edit Profile Button */}
+<div className="mt-6 text-right">
+  <Link
+    to="/student-edit" // or "/alumni-edit" for alumni
+    className="inline-block bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+  >
+    Edit Profile
+  </Link>
+</div>
+
       </div>
     </>
   );

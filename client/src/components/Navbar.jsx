@@ -1,72 +1,163 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { user, logout } = useContext(AuthContext);
+  const { user, token, logout } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
+
+  /* click avatar → dashboard */
+  const handleProfileClick = () => {
+    if (user?.role === "student") navigate("/student-dashboard");
+    else if (user?.role === "alumni") navigate("/alumni-dashboard");
+  };
 
   const handleLogout = () => {
     logout();
     navigate("/");
   };
 
-  // 📌 Decide if user is in a dashboard area (student or alumni)
+  /* detect dashboard pages */
   const isStudentView = location.pathname.startsWith("/student");
-  const isAlumniView = location.pathname.startsWith("/alumni");
+  const isAlumniView  = location.pathname.startsWith("/alumni");
   const isDashboardView = isStudentView || isAlumniView;
 
+  /* ─────────────────────────────────────────── */
+  const DesktopLinks = () =>
+    !isDashboardView ? (
+      /* ---------- PUBLIC NAV ---------- */
+      <>
+        <Link to="/" className="text-gray-700 hover:text-indigo-600">Home</Link>
+        <a href="#about" className="text-gray-700 hover:text-indigo-600">About</a>
+
+        {token ? (
+          <div
+            onClick={handleProfileClick}
+            title="Go to Dashboard"
+            className="w-10 h-10 rounded-full overflow-hidden cursor-pointer border-2 border-indigo-500"
+          >
+            <img
+              src={
+                user?.profilePhoto
+                  ? `http://localhost:5000/uploads/${user.profilePhoto}`
+                  : "/default-avatar.png"
+              }
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        ) : (
+          <Link
+            to="/login"
+            className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+          >
+            Login
+          </Link>
+        )}
+      </>
+    ) : (
+      /* ---------- DASHBOARD NAV ---------- */
+      <>
+        <Link
+          to={isStudentView ? "/student-dashboard" : "/alumni-dashboard"}
+          className="text-gray-700 hover:text-indigo-600"
+        >
+          Dashboard
+        </Link>
+        <Link
+          to={isStudentView ? "/student-profile" : "/alumni-profile"}
+          className="text-gray-700 hover:text-indigo-600"
+        >
+          View Profile
+        </Link>
+      
+        <button
+          onClick={handleLogout}
+          className="text-red-600 hover:text-red-800 font-medium"
+        >
+          Logout
+        </button>
+      </>
+    );
+
+  /* ─────────────────────────────────────────── */
+  const MobileLinks = () =>
+    !isDashboardView ? (
+      /* PUBLIC (mobile) */
+      <>
+        <Link to="/" className="block text-gray-700 hover:text-indigo-600">
+          Home
+        </Link>
+        <a href="#about" className="block text-gray-700 hover:text-indigo-600">
+          About
+        </a>
+
+        {token ? (
+          <div
+            onClick={handleProfileClick}
+            title="Go to Dashboard"
+            className="w-10 h-10 rounded-full overflow-hidden cursor-pointer border-2 border-indigo-500"
+          >
+            <img
+              src={
+                user?.profilePhoto
+                  ? `http://localhost:5000/uploads/${user.profilePhoto}`
+                  : "/default-avatar.png"
+              }
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        ) : (
+          <Link
+            to="/login"
+            className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 block text-center"
+          >
+            Login
+          </Link>
+        )}
+      </>
+    ) : (
+      /* DASHBOARD (mobile) */
+      <>
+        <Link
+          to={isStudentView ? "/student-dashboard" : "/alumni-dashboard"}
+          className="block text-gray-700 hover:text-indigo-600"
+        >
+          Dashboard
+        </Link>
+        <Link
+          to={isStudentView ? "/student-profile" : "/alumni-profile"}
+          className="block text-gray-700 hover:text-indigo-600"
+        >
+          View Profile
+        </Link>
+       
+        <button
+          onClick={handleLogout}
+          className="block text-red-600 hover:text-red-800 font-medium"
+        >
+          Logout
+        </button>
+      </>
+    );
+
+  /* ─────────────────────────────────────────── */
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
-        {/* Logo / Title */}
         <Link to="/" className="text-2xl font-bold text-indigo-600">
           AllyNet
         </Link>
 
-        {/* Desktop View */}
-        <div className="hidden md:flex gap-6">
-          {!isDashboardView ? (
-            <>
-              <Link to="/" className="text-gray-700 hover:text-indigo-600">Home</Link>
-              <a href="#about" className="text-gray-700 hover:text-indigo-600">About</a>
-              {user ? (
-                <button onClick={handleLogout} className="text-gray-700 hover:text-red-600">Logout</button>
-              ) : (
-                <Link to="/login" className="text-gray-700 hover:text-indigo-600">Login</Link>
-              )}
-            </>
-          ) : (
-            <>
-              <Link
-                to={isStudentView ? "/student-dashboard" : "/alumni-dashboard"}
-                className="text-gray-700 hover:text-indigo-600"
-              >
-                Dashboard
-              </Link>
-              <Link
-                to={isStudentView ? "/student-profile" : "/alumni-profile"}
-                className="text-gray-700 hover:text-indigo-600"
-              >
-                View Profile
-              </Link>
-              <Link
-                to={isStudentView ? "/student-edit" : "/alumni-edit"}
-                className="text-gray-700 hover:text-indigo-600"
-              >
-                Edit Profile
-              </Link>
-              <button onClick={handleLogout} className="text-gray-700 hover:text-red-600">
-                Logout
-              </button>
-            </>
-          )}
+        {/* desktop */}
+        <div className="hidden md:flex gap-6 items-center">
+          <DesktopLinks />
         </div>
 
-        {/* Mobile Hamburger */}
+        {/* hamburger */}
         <button
           className="md:hidden focus:outline-none"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -75,44 +166,10 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* mobile dropdown */}
       {menuOpen && (
         <div className="md:hidden px-4 pb-4 space-y-2">
-          {!isDashboardView ? (
-            <>
-              <Link to="/" className="block text-gray-700 hover:text-indigo-600">Home</Link>
-              <a href="#about" className="block text-gray-700 hover:text-indigo-600">About</a>
-              {user ? (
-                <button onClick={handleLogout} className="block text-gray-700 hover:text-red-600">Logout</button>
-              ) : (
-                <Link to="/login" className="block text-gray-700 hover:text-indigo-600">Login</Link>
-              )}
-            </>
-          ) : (
-            <>
-              <Link
-                to={isStudentView ? "/student-dashboard" : "/alumni-dashboard"}
-                className="block text-gray-700 hover:text-indigo-600"
-              >
-                Dashboard
-              </Link>
-              <Link
-                to={isStudentView ? "/student-profile" : "/alumni-profile"}
-                className="block text-gray-700 hover:text-indigo-600"
-              >
-                View Profile
-              </Link>
-              <Link
-                to={isStudentView ? "/student-edit" : "/alumni-edit"}
-                className="block text-gray-700 hover:text-indigo-600"
-              >
-                Edit Profile
-              </Link>
-              <button onClick={handleLogout} className="block text-gray-700 hover:text-red-600">
-                Logout
-              </button>
-            </>
-          )}
+          <MobileLinks />
         </div>
       )}
     </nav>

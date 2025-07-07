@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 
 export default function StudentDashboard() {
-  const { token } = useContext(AuthContext);                // token comes from sessionStorage via context
+  const { token,user } = useContext(AuthContext);                // token comes from sessionStorage via context
   const [alumniList, setAlumniList] = useState([]);
   const [sentTo, setSentTo] = useState(new Set());          // IDs you've already requested
   const [filter, setFilter] = useState("");                 // domain search
@@ -54,6 +54,13 @@ export default function StudentDashboard() {
         <h2 className="text-2xl font-bold text-indigo-700 mb-4">
           Student Dashboard
         </h2>
+{/* {user?.profilePhoto && (
+  <img
+    src={`http://localhost:5000/uploads/${user.profilePhoto}`}
+    alt="Profile"
+    className="w-24 h-24 rounded-half object-cover border mb-4 mx-3"
+  />
+)} */}
 
         {error && <p className="text-red-500 mb-4">{error}</p>}
 
