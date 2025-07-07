@@ -1,7 +1,9 @@
 import express from "express";
+import fs from "fs";
+import path from "path";
 import { protect } from "../middleware/authMiddleware.js";
 import User from "../models/User.js";
-
+import upload from "../middleware/uploadMiddleware.js";
 const router = express.Router();
 
 // PUT /api/users/profile
@@ -37,6 +39,53 @@ router.put("/profile", protect, async (req, res) => {
   }
 });
 
+
+/* ---------- upload profile photo ---------- */
+router.post(
+  "/upload-profile-photo",
+  protect,
+  upload.single("profilePhoto"),
+  async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ msg: "No file uploaded" });
+      }
+
+      const user = await User.findByIdAndUpdate(
+        req.user._id,
+        { profilePhoto: req.file.filename },
+        { new: true }
+      ).select("-password");
+
+      res.json({ msg: "Photo uploaded", profilePhoto: user.profilePhoto });
+    } catch (err) {
+      console.error("Photo upload error:", err);
+      res.status(500).json({ msg: "Server error" });
+    }
+  }
+);
+
+/* ---------- remove profile photo ---------- */
+router.delete("/remove-profile-photo", protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (user.profilePhoto) {
+      // Delete file from disk (guard against missing file)
+      const filePath = path.join("uploads", user.profilePhoto);
+      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+
+      // Clear field in DB
+      user.profilePhoto = null;
+      await user.save();
+    }
+
+    res.json({ msg: "Photo removed" });
+  } catch (err) {
+    console.error("Failed to remove photo:", err);
+    res.status(500).json({ msg: "Failed to remove photo" });
+  }
+});
 
 
 

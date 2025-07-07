@@ -69,6 +69,14 @@ export default function AlumniDashboard() {
         {/* Profile Preview */}
         <div className="bg-white rounded shadow p-4 mb-6">
           <h3 className="text-xl font-semibold mb-2 text-indigo-600">Your Profile</h3>
+          {user?.profilePhoto && (
+  <img
+    src={`http://localhost:5000/uploads/${user.profilePhoto}`}
+    alt="Profile"
+    className="w-24 h-24 rounded-full object-cover"
+  />
+)}
+
           {profile ? (
             <div>
               <p><strong>Name:</strong> {profile.name}</p>
