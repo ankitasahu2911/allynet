@@ -8,7 +8,12 @@ export default function StudentEditProfile() {
 
   const [form, setForm] = useState({ domain: "", bio: "", skills: "" });
   const [profilePhoto, setProfilePhoto] = useState(null);
-  const [preview, setPreview] = useState(null);
+  const [preview, setPreview] = useState(
+  user?.profilePhoto
+    ? `http://localhost:5000/uploads/${user.profilePhoto}`
+    : null
+);
+
 
   /* ⬇︎ Prefill form on load */
   useEffect(() => {

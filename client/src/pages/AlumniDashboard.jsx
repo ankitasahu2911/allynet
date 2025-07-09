@@ -66,42 +66,7 @@ export default function AlumniDashboard() {
       <div className="min-h-screen bg-indigo-50 p-6">
         <h2 className="text-3xl font-bold text-indigo-700 mb-6">Alumni Dashboard</h2>
 
-        {/* Profile Preview */}
-        <div className="bg-white rounded shadow p-4 mb-6">
-          <h3 className="text-xl font-semibold mb-2 text-indigo-600">Your Profile</h3>
-          {user?.profilePhoto && (
-  <img
-    src={`http://localhost:5000/uploads/${user.profilePhoto}`}
-    alt="Profile"
-    className="w-24 h-24 rounded-full object-cover"
-  />
-)}
-
-          {profile ? (
-            <div>
-              <p><strong>Name:</strong> {profile.name}</p>
-              <p><strong>Email:</strong> {profile.email}</p>
-              <p><strong>Domain:</strong> {profile.domain || "Not specified"}</p>
-              <p><strong>Skills:</strong> {profile.skills || "Not specified"}</p>
-              <div className="mt-4 flex gap-4">
-                <button
-                  className="bg-indigo-600 text-white px-3 py-1 rounded"
-                  onClick={() => navigate("/alumni-profile")}
-                >
-                  View Full Profile
-                </button>
-                <button
-                  className="bg-gray-600 text-white px-3 py-1 rounded"
-                  onClick={() => navigate("/alumni-edit")}
-                >
-                  Edit / Complete Profile
-                </button>
-              </div>
-            </div>
-          ) : (
-            <p className="text-gray-600">Loading profile...</p>
-          )}
-        </div>
+       
 
         {/* Connection Requests */}
         <div className="bg-white rounded shadow p-4">

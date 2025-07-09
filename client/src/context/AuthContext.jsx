@@ -18,12 +18,13 @@ export default function AuthProvider({ children }) {
     setLoading(false);
   }, []);
 
-  const login = (tk, usr) => {
-    setToken(tk);
-    setUser(usr);
-    sessionStorage.setItem("token", tk);
-    sessionStorage.setItem("user", JSON.stringify(usr));
-  };
+ const login = (tk, usr) => {
+  setToken(tk);
+  setUser(usr);
+  sessionStorage.setItem("token", tk);
+  sessionStorage.setItem("user", JSON.stringify(usr));
+};
+
 
   const logout = () => {
     setToken(null);

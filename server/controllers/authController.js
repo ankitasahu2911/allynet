@@ -49,8 +49,22 @@ export const loginUser = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    res.json({ token, user: { name: user.name, role: user.role } });
+    res.json({
+      token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        domain: user.domain,
+        bio: user.bio,
+        skills: user.skills,
+        resume: user.resume,
+        profilePhoto: user.profilePhoto, // ✅ include this!
+      },
+    });
   } catch (err) {
     res.status(500).json({ msg: "Login error", error: err.message });
   }
 };
+
