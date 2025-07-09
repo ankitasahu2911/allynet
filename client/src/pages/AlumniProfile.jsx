@@ -26,6 +26,11 @@ export default function AlumniProfile() {
         <p><strong>Domain:</strong> {user.domain || "N/A"}</p>
         <p><strong>Bio:</strong> {user.bio || "N/A"}</p>
         <p><strong>Skills:</strong> {user.skills?.join(", ") || "N/A"}</p>
+        <p><strong>Company:</strong> {user.company || "N/A"}</p>
+<p><strong>Designation:</strong> {user.designation || "N/A"}</p>
+<p><strong>Department:</strong> {user.department || "N/A"}</p>
+<p><strong>Passing Year:</strong> {user.passingYear || "N/A"}</p>
+
 
         {user.resume && (
           <p>

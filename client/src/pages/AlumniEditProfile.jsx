@@ -7,11 +7,16 @@ export default function AlumniEditProfile() {
 
   /* ---------------- state ---------------- */
   const [formData, setFormData] = useState({
-    domain: user.domain || "",
-    bio:    user.bio || "",
-    skills: user.skills?.join(", ") || "",
-    resume: user.resume || "",
-  });
+  domain: user.domain || "",
+  bio: user.bio || "",
+  skills: user.skills?.join(", ") || "",
+  resume: user.resume || "",
+  company: user.company || "",
+  designation: user.designation || "",
+  department: user.department || "",
+  passingYear: user.passingYear || "",
+});
+
 
   const [profilePhoto, setProfilePhoto] = useState(null);                    // file object
   const [preview, setPreview] = useState(                                    // shown image
@@ -180,6 +185,38 @@ export default function AlumniEditProfile() {
           placeholder="Skills (comma separated)"
           className="w-full border p-2 rounded"
         />
+        <input
+  name="company"
+  value={formData.company}
+  onChange={handleChange}
+  placeholder="Company"
+  className="w-full border p-2 rounded"
+/>
+
+<input
+  name="designation"
+  value={formData.designation}
+  onChange={handleChange}
+  placeholder="Designation"
+  className="w-full border p-2 rounded"
+/>
+
+<input
+  name="department"
+  value={formData.department}
+  onChange={handleChange}
+  placeholder="Department"
+  className="w-full border p-2 rounded"
+/>
+
+<input
+  name="passingYear"
+  value={formData.passingYear}
+  onChange={handleChange}
+  placeholder="Passing Year"
+  className="w-full border p-2 rounded"
+/>
+
         <input
           name="resume"
           type="url"

@@ -61,6 +61,10 @@ export const loginUser = async (req, res) => {
         skills: user.skills,
         resume: user.resume,
         profilePhoto: user.profilePhoto, // ✅ include this!
+        company : user.company,
+    designation : user.designation,
+  department : user.department,
+    passingYear : user.passingYear,
       },
     });
   } catch (err) {

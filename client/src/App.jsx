@@ -9,6 +9,7 @@ import AlumniEditProfile from "./pages/AlumniEditProfile";
 import PrivateRoute from "./routes/PrivateRoute";
 import StudentProfile from "./pages/StudentProfile";
 import StudentEditProfile from "./pages/StudentEditProfile";
+import AlumniProfileView from "./pages/AlumniProfileView";
 
 function App() {
   return (
@@ -66,6 +67,8 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route path="/alumni/:id" element={<AlumniProfileView />} />
+
       </Routes>
     </Router>
   );

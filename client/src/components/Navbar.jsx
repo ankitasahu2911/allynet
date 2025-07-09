@@ -70,7 +70,7 @@ export default function Navbar() {
           to={isStudentView ? "/student-profile" : "/alumni-profile"}
           className="text-gray-700 hover:text-indigo-600"
         >
-          View Profile
+           Profile
         </Link>
       
         <button
@@ -132,7 +132,7 @@ export default function Navbar() {
           to={isStudentView ? "/student-profile" : "/alumni-profile"}
           className="block text-gray-700 hover:text-indigo-600"
         >
-          View Profile
+          Profile
         </Link>
        
         <button

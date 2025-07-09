@@ -2,15 +2,16 @@ import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router-dom";
 
 export default function StudentDashboard() {
-  const { token,user } = useContext(AuthContext);                // token comes from sessionStorage via context
+  const { token, user } = useContext(AuthContext);
   const [alumniList, setAlumniList] = useState([]);
-  const [sentTo, setSentTo] = useState(new Set());          // IDs you've already requested
-  const [filter, setFilter] = useState("");                 // domain search
+  const [sentTo, setSentTo] = useState(new Set());
+  const [filter, setFilter] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  /* 👉 Fetch all alumni on first render */
   useEffect(() => {
     const fetchAlumni = async () => {
       try {
@@ -26,7 +27,6 @@ export default function StudentDashboard() {
     if (token) fetchAlumni();
   }, [token]);
 
-  /* 👉 Connect handler */
   const handleConnect = async (alumniId) => {
     try {
       const res = await axios.post(
@@ -35,13 +35,12 @@ export default function StudentDashboard() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       alert(res.data.msg);
-      setSentTo((prev) => new Set(prev).add(alumniId));     // mark as requested
+      setSentTo((prev) => new Set(prev).add(alumniId));
     } catch (err) {
       alert(err.response?.data?.msg || "Failed to send request");
     }
   };
 
-  /* 👉 Filtered list by domain keyword */
   const displayedAlumni = alumniList.filter((a) =>
     a.domain?.toLowerCase().includes(filter.toLowerCase())
   );
@@ -54,17 +53,9 @@ export default function StudentDashboard() {
         <h2 className="text-2xl font-bold text-indigo-700 mb-4">
           Student Dashboard
         </h2>
-{/* {user?.profilePhoto && (
-  <img
-    src={`http://localhost:5000/uploads/${user.profilePhoto}`}
-    alt="Profile"
-    className="w-24 h-24 rounded-half object-cover border mb-4 mx-3"
-  />
-)} */}
 
         {error && <p className="text-red-500 mb-4">{error}</p>}
 
-        {/* Domain filter */}
         <input
           type="text"
           value={filter}
@@ -74,9 +65,7 @@ export default function StudentDashboard() {
         />
 
         <section>
-          <h3 className="text-xl font-semibold mb-4">
-            👥 Available Alumni Mentors
-          </h3>
+          <h3 className="text-xl font-semibold mb-4">👥 Available Alumni Mentors</h3>
 
           {displayedAlumni.length === 0 ? (
             <p className="text-gray-600">No alumni match this domain.</p>
@@ -87,9 +76,14 @@ export default function StudentDashboard() {
                   key={alumni._id}
                   className="bg-white p-4 shadow rounded space-y-2"
                 >
-                  <h4 className="text-lg font-bold text-indigo-600">
-                    {alumni.name}
-                  </h4>
+                  {alumni.profilePhoto && (
+                    <img
+                      src={`http://localhost:5000/uploads/${alumni.profilePhoto}`}
+                      alt="Alumni"
+                      className="w-16 h-16 rounded-full object-cover"
+                    />
+                  )}
+                  <h4 className="text-lg font-bold text-indigo-600">{alumni.name}</h4>
                   <p className="text-gray-700">{alumni.email}</p>
                   <p className="text-sm text-gray-500">
                     <strong>Domain:</strong> {alumni.domain || "N/A"}
@@ -100,17 +94,26 @@ export default function StudentDashboard() {
                     </p>
                   )}
 
-                  <button
-                    onClick={() => handleConnect(alumni._id)}
-                    className={`w-full px-3 py-2 rounded ${
-                      sentTo.has(alumni._id)
-                        ? "bg-gray-400 cursor-not-allowed"
-                        : "bg-indigo-500 hover:bg-indigo-600 text-white"
-                    }`}
-                    disabled={sentTo.has(alumni._id)}
-                  >
-                    {sentTo.has(alumni._id) ? "Request Sent" : "Connect"}
-                  </button>
+                  <div className="flex flex-col gap-2 mt-2">
+                    <button
+                      onClick={() => navigate(`/alumni/${alumni._id}`)}
+                      className="w-full bg-indigo-100 text-indigo-700 px-3 py-1 rounded hover:bg-indigo-200"
+                    >
+                      View Profile
+                    </button>
+
+                    <button
+                      onClick={() => handleConnect(alumni._id)}
+                      className={`w-full px-3 py-2 rounded ${
+                        sentTo.has(alumni._id)
+                          ? "bg-gray-400 cursor-not-allowed"
+                          : "bg-indigo-500 hover:bg-indigo-600 text-white"
+                      }`}
+                      disabled={sentTo.has(alumni._id)}
+                    >
+                      {sentTo.has(alumni._id) ? "Request Sent" : "Connect"}
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>

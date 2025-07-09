@@ -23,7 +23,10 @@ router.put("/profile", protect, async (req, res) => {
       bio: req.body.bio,
       skills,          // use the cleaned array
       resume: req.body.resume,
-      
+      company: req.body.company,
+      designation: req.body.designation,
+      department: req.body.department,
+      passingYear: req.body.passingYear,
     };
 
     const updatedUser = await User.findByIdAndUpdate(
