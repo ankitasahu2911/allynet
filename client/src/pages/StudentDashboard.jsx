@@ -3,7 +3,7 @@ import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 export default function StudentDashboard() {
   const { token, user } = useContext(AuthContext);
   const [alumniList, setAlumniList] = useState([]);
@@ -113,6 +113,27 @@ export default function StudentDashboard() {
                     >
                       {sentTo.has(alumni._id) ? "Request Sent" : "Connect"}
                     </button>
+                    <button
+  onClick={async () => {
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/message/conversations/start",
+        { receiverId: alumni._id },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      navigate(`/messages?user=${alumni._id}`);
+    } catch (err) {
+      alert("Couldn't open message. Try again.");
+      console.error(err);
+    }
+  }}
+  className="w-full bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
+>
+  Message
+</button>
+
+
                   </div>
                 </div>
               ))}

@@ -3,7 +3,11 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import AuthProvider from "./context/AuthContext";
-
+import { MessageProvider } from "./context/MessageContext";
 createRoot(document.getElementById('root')).render(
-  <AuthProvider><App /></AuthProvider>
+  <AuthProvider>
+      <MessageProvider>
+        <App />
+      </MessageProvider>
+    </AuthProvider>
 )

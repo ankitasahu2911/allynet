@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 export default function StudentProfile() {
   const { token,user } = useContext(AuthContext);
   const [profile, setProfile] = useState(null);
-
+  const [hasNewMessage, setHasNewMessage] = useState(false);
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -24,7 +24,8 @@ export default function StudentProfile() {
 
   return (
     <>
-      <Navbar />
+   <Navbar hasNewMessage={hasNewMessage} />
+
       <div className="p-6 bg-indigo-50 min-h-screen">
         <h2 className="text-2xl font-bold text-indigo-700 mb-4">Your Profile</h2>
 
@@ -46,6 +47,7 @@ export default function StudentProfile() {
             <p><strong>Skills:</strong> {profile.skills?.join(", ") || "No skills listed"}</p>
           </div>
         )}
+
 
         {/* Bottom Edit Profile Button */}
 <div className="mt-6 text-right">

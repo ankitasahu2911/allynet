@@ -8,9 +8,9 @@ import alumniRoutes from "./routes/alumni.js";
 import studentRoutes from "./routes/student.js";
 // import user from "./routes/user.js";
 import userRoutes from './routes/users.js';
- import upload from "./middleware/uploadMiddleware.js"; // Uncomment if you have a file upload middleware
-
- 
+// Uncomment if you have a file upload middleware
+// import messageRoutes from "./routes/messageRoutes.js";
+ import messageRoutes from "./routes/messageRoutes.js";
 dotenv.config();
 // const JWT_SECRET = process.env.j8B9lKEF2MJLosfTWRMzKejZRsqRhTZ2;
 // console.log("JWT_SECRET is:", process.env.JWT_SECRET);
@@ -56,4 +56,7 @@ app.use("/api/student", studentRoutes);
 // app.use("/api/users", user);
 app.use('/api/users', userRoutes);     
 
-
+// Import message routes
+// app.use("/api/messages", messageRoutes);
+// const messageRoutes = require("./routes/messageRoutes");
+app.use("/api/message", messageRoutes);

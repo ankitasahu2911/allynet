@@ -10,7 +10,8 @@ import PrivateRoute from "./routes/PrivateRoute";
 import StudentProfile from "./pages/StudentProfile";
 import StudentEditProfile from "./pages/StudentEditProfile";
 import AlumniProfileView from "./pages/AlumniProfileView";
-
+import MessagingPage from "./pages/MessagingPage";
+import { MessageProvider } from "./context/MessageContext"; 
 function App() {
   return (
     <Router>
@@ -68,7 +69,11 @@ function App() {
           }
         />
         <Route path="/alumni/:id" element={<AlumniProfileView />} />
-
+ <Route path="/messages" element={
+  <PrivateRoute>
+    <MessagingPage />
+  </PrivateRoute>
+} />
       </Routes>
     </Router>
   );

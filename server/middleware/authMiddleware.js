@@ -28,3 +28,27 @@ export const protect = async (req, res, next) => {
     res.status(401).json({ msg: "No token provided" });
   }
 };
+
+
+export const verifyToken = (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // ✅ Add these logs to debug
+    console.log("🟡 Token:", token);
+    console.log("🟢 Decoded:", decoded);
+
+    req.user = decoded;
+    next();
+  } catch (err) {
+    console.error("🔴 Token verification failed:", err.message);
+    return res.status(401).json({ message: "Invalid token" });
+  }
+};
