@@ -11,8 +11,11 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const isStudentView = location.pathname.startsWith("/student");
-  const isAlumniView = location.pathname.startsWith("/alumni");
-  const isDashboardView = isStudentView || isAlumniView;
+const isAlumniView = location.pathname.startsWith("/alumni");
+const isWriteBlogView = location.pathname.startsWith("/write-blog");
+
+const isDashboardView = isStudentView || isAlumniView || isWriteBlogView;
+
 
   const handleProfileClick = () => {
     if (user?.role === "student") navigate("/student-dashboard");
@@ -58,7 +61,19 @@ export default function Navbar() {
       </>
     ) : (
       <>
-        <Link to={isStudentView ? "/student-dashboard" : "/alumni-dashboard"} className="text-gray-700 hover:text-indigo-600">Dashboard</Link>
+       <Link
+  to={
+    user?.role === "student"
+      ? "/student-dashboard"
+      : user?.role === "alumni"
+      ? "/alumni-dashboard"
+      : "/"
+  }
+  className="text-gray-700 hover:text-indigo-600"
+>
+  Dashboard
+</Link>
+
         <Link to={isStudentView ? "/student-profile" : "/alumni-profile"} className="text-gray-700 hover:text-indigo-600">Profile</Link>
         {token && MessageLink}
         <button onClick={handleLogout} className="text-red-600 hover:text-red-800 font-medium">Logout</button>
@@ -88,7 +103,19 @@ export default function Navbar() {
       </>
     ) : (
       <>
-        <Link to={isStudentView ? "/student-dashboard" : "/alumni-dashboard"} className="block text-gray-700 hover:text-indigo-600">Dashboard</Link>
+        <Link
+  to={
+    user?.role === "student"
+      ? "/student-dashboard"
+      : user?.role === "alumni"
+      ? "/alumni-dashboard"
+      : "/"
+  }
+  className="text-gray-700 hover:text-indigo-600"
+>
+  Dashboard
+</Link>
+
         <Link to={isStudentView ? "/student-profile" : "/alumni-profile"} className="block text-gray-700 hover:text-indigo-600">Profile</Link>
         {token && MessageLink}
         <button onClick={handleLogout} className="block text-red-600 hover:text-red-800 font-medium">Logout</button>

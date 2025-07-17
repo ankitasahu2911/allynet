@@ -3,7 +3,7 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-
+import { Link } from "react-router-dom";
 export default function AlumniDashboard() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -66,7 +66,15 @@ export default function AlumniDashboard() {
       <div className="min-h-screen bg-indigo-50 p-6">
         <h2 className="text-3xl font-bold text-indigo-700 mb-6">Alumni Dashboard</h2>
 
-       
+       <div className="mb-4">
+  <Link
+    to="/write-blog"
+    className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2 rounded"
+  >
+    ✍️ Write a Blog
+  </Link>
+</div>
+
 
         {/* Connection Requests */}
         <div className="bg-white rounded shadow p-4">
